@@ -1,0 +1,250 @@
+:root {
+    /* --- palette: night-game stadium meets Statcast data viz --- */
+    --field:    #0F1B1E;   /* 夜のスタジアム（背景） */
+    --surface:  #16282C;   /* パネル面 */
+    --surface2: #1E343A;   /* もう一段明るい面 */
+    --chalk:    #EDEAE0;   /* チョークライン（本文） */
+    --muted:    #8499A0;   /* 補助テキスト */
+    --line:     #2C474D;   /* 罫線 */
+    --clay:     #D2763C;   /* 内野の土（野球サイドのアクセント） */
+    --cyan:     #5BD4C4;   /* データ／AIサイドのアクセント */
+
+    --display: "Oswald", "Zen Kaku Gothic New", sans-serif;
+    --body:    "Zen Kaku Gothic New", "Oswald", sans-serif;
+    --data:    "Space Mono", monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--field);
+    color: var(--chalk);
+    font-family: var(--body);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    /* かすかな内野のチョークラインのテクスチャ */
+    background-image:
+      radial-gradient(circle at 18% 12%, rgba(91,212,196,0.05), transparent 38%),
+      radial-gradient(circle at 85% 80%, rgba(210,118,60,0.06), transparent 42%);
+  }
+
+  ::selection { background: var(--clay); color: var(--field); }
+
+  a { color: inherit; text-decoration: none; }
+
+  :focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .wrap { width: min(1040px, 90vw); margin-inline: auto; }
+
+  /* ============ ヘッダー（ロースター・ラベル） ============ */
+  header.bar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(15,27,30,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .brand {
+    font-family: var(--data); font-size: 0.8rem; letter-spacing: 0.18em;
+    color: var(--cyan); text-transform: uppercase;
+  }
+  .brand b { color: var(--chalk); }
+  nav.links { display: flex; gap: 1.6rem; }
+  nav.links a {
+    font-family: var(--display); font-weight: 500; font-size: 0.82rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+    transition: color 0.2s;
+  }
+  nav.links a:hover { color: var(--chalk); }
+  @media (max-width: 620px) { nav.links { display: none; } }
+
+  /* ============ ヒーロー（選手カード） ============ */
+  .hero { padding: 7rem 0 4.5rem; }
+  .eyebrow {
+    font-family: var(--data); font-size: 0.75rem; letter-spacing: 0.28em;
+    text-transform: uppercase; color: var(--clay);
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .eyebrow::before {
+    content: ""; width: 34px; height: 1px; background: var(--clay);
+  }
+  .hero h1 {
+    font-family: var(--display); font-weight: 700;
+    font-size: clamp(3rem, 9vw, 6.5rem);
+    line-height: 0.92; letter-spacing: -0.01em;
+    margin: 1.1rem 0 0.3rem; text-transform: uppercase;
+  }
+  .hero h1 .accent { color: var(--clay); }
+  .hero .jp-name {
+    font-family: var(--body); font-weight: 500;
+    font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+    color: var(--muted); letter-spacing: 0.1em;
+  }
+  .hero .position {
+    margin-top: 1.6rem; font-size: 1.05rem; max-width: 30ch;
+    color: var(--chalk);
+  }
+  .hero .position .x { color: var(--cyan); font-family: var(--data); }
+
+  /* ============ スタッツ・ライン（ボックススコア） ============ */
+  .statline {
+    margin-top: 3.2rem;
+    border: 1px solid var(--line);
+    border-radius: 8px; overflow: hidden;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    background: var(--surface);
+  }
+  .stat {
+    padding: 1.3rem 1.1rem; border-right: 1px solid var(--line);
+    position: relative;
+  }
+  .stat:last-child { border-right: none; }
+  .stat .label {
+    font-family: var(--data); font-size: 0.68rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .stat .value {
+    font-family: var(--display); font-weight: 600;
+    font-size: clamp(1.4rem, 4vw, 2.1rem); margin-top: 0.3rem;
+    color: var(--chalk); line-height: 1.1;
+  }
+  .stat .value.hl { color: var(--cyan); }
+  @media (max-width: 620px) {
+    .statline { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(2) { border-right: none; }
+    .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid var(--line); }
+  }
+
+  /* ============ セクション共通 ============ */
+  section { padding: 4.5rem 0; }
+  .sec-head {
+    display: flex; align-items: baseline; gap: 1rem;
+    margin-bottom: 2.4rem; border-bottom: 1px solid var(--line);
+    padding-bottom: 0.9rem;
+  }
+  .sec-num {
+    font-family: var(--data); font-size: 0.8rem; color: var(--clay);
+    letter-spacing: 0.1em;
+  }
+  .sec-head h2 {
+    font-family: var(--display); font-weight: 600;
+    font-size: clamp(1.6rem, 4vw, 2.4rem); text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .sec-head .en {
+    font-family: var(--data); font-size: 0.75rem; color: var(--muted);
+    letter-spacing: 0.18em; text-transform: uppercase; margin-left: auto;
+  }
+  @media (max-width: 620px) { .sec-head .en { display: none; } }
+
+  /* ============ About ============ */
+  .about-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 3rem; }
+  .about-grid p { color: var(--chalk); margin-bottom: 1rem; }
+  .about-grid p:last-child { margin-bottom: 0; }
+  .about-aside {
+    border-left: 2px solid var(--cyan); padding-left: 1.4rem;
+    font-family: var(--data); font-size: 0.85rem; color: var(--muted);
+    align-self: start;
+  }
+  .about-aside .row { margin-bottom: 0.9rem; }
+  .about-aside .k { color: var(--cyan); display: block; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; }
+  .about-aside .v { color: var(--chalk); }
+  @media (max-width: 760px) { .about-grid { grid-template-columns: 1fr; gap: 2rem; } }
+
+  /* ============ Skills（ラインナップ・カード） ============ */
+  .lineup { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  .card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 8px; padding: 1.5rem;
+    transition: transform 0.25s, border-color 0.25s;
+  }
+  .card:hover { transform: translateY(-4px); border-color: var(--cyan); }
+  .card .pos {
+    font-family: var(--data); font-size: 0.68rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--clay); margin-bottom: 0.6rem;
+  }
+  .card h3 {
+    font-family: var(--display); font-weight: 600; font-size: 1.15rem;
+    margin-bottom: 0.7rem; letter-spacing: 0.02em;
+  }
+  .card .desc { font-size: 0.85rem; color: var(--muted); }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .tag {
+    font-family: var(--data); font-size: 0.72rem; color: var(--chalk);
+    background: var(--surface2); border: 1px solid var(--line);
+    padding: 0.25rem 0.6rem; border-radius: 4px;
+  }
+  @media (max-width: 760px) { .lineup { grid-template-columns: 1fr; } }
+
+  /* ============ Works ============ */
+  .works { display: flex; flex-direction: column; gap: 0; }
+  .work {
+    display: grid; grid-template-columns: 56px 1fr auto;
+    gap: 1.4rem; align-items: center;
+    padding: 1.6rem 0.4rem; border-bottom: 1px solid var(--line);
+    transition: padding-left 0.25s, background 0.25s;
+  }
+  .work:first-child { border-top: 1px solid var(--line); }
+  .work:hover { padding-left: 1.1rem; background: var(--surface); }
+  .work .no {
+    font-family: var(--data); font-size: 1.1rem; color: var(--clay);
+  }
+  .work .body h3 {
+    font-family: var(--display); font-weight: 500; font-size: 1.3rem;
+    letter-spacing: 0.01em;
+  }
+  .work .body p { font-size: 0.9rem; color: var(--muted); margin-top: 0.2rem; }
+  .work .meta {
+    font-family: var(--data); font-size: 0.72rem; color: var(--cyan);
+    letter-spacing: 0.1em; text-align: right; white-space: nowrap;
+  }
+  @media (max-width: 620px) {
+    .work { grid-template-columns: 36px 1fr; }
+    .work .meta { display: none; }
+  }
+
+  /* ============ Contact ============ */
+  .contact { text-align: center; padding: 6rem 0 7rem; }
+  .contact .eyebrow { justify-content: center; }
+  .contact .eyebrow::before { display: none; }
+  .contact h2 {
+    font-family: var(--display); font-weight: 700;
+    font-size: clamp(2.2rem, 6vw, 4rem); text-transform: uppercase;
+    margin: 0.8rem 0 1.8rem; line-height: 1;
+  }
+  .contact .btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    font-family: var(--display); font-weight: 500; font-size: 0.9rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.85rem 1.8rem; border-radius: 6px;
+    border: 1px solid var(--line); color: var(--chalk);
+    background: var(--surface); transition: all 0.2s;
+  }
+  .btn:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+  .btn.primary { background: var(--clay); border-color: var(--clay); color: var(--field); }
+  .btn.primary:hover { background: transparent; color: var(--clay); transform: translateY(-2px); }
+
+  footer {
+    border-top: 1px solid var(--line); padding: 2rem 0;
+    font-family: var(--data); font-size: 0.72rem; color: var(--muted);
+    text-align: center; letter-spacing: 0.1em;
+  }
+
+  /* ============ 登場アニメーション ============ */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .card:hover, .work:hover, .btn:hover { transform: none; }
+  }
